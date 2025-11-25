@@ -3,9 +3,9 @@ import Foundation
 enum APIEnvironment {
     static var baseURL: URL {
         #if targetEnvironment(simulator)
-        return URL(string: "http://dev.local.makenoise.app/api/v1/")!
+        return URL(string: "https://dev.local.makenoise.app/api/v1/")!
         #else
-        return URL(string: "http://makenoise.app/api/v1/")!
+        return URL(string: "https://makenoise.app/api/v1/")!
         #endif
     }
 }
@@ -44,10 +44,28 @@ final class APIClient {
     static let shared = APIClient()
 
     private let session: URLSession
+    private let sessionDelegate: URLSessionDelegate?
     private(set) var authToken: String?
 
-    init(session: URLSession = .shared) {
-        self.session = session
+    init(session: URLSession? = nil) {
+        if let session {
+            self.session = session
+            self.sessionDelegate = nil
+        } else {
+            let (createdSession, delegate) = APIClient.makeSession()
+            self.session = createdSession
+            self.sessionDelegate = delegate
+        }
+    }
+
+    private static func makeSession() -> (URLSession, URLSessionDelegate?) {
+        #if targetEnvironment(simulator)
+        let delegate = DevelopmentServerTrustDelegate()
+        let session = URLSession(configuration: .default, delegate: delegate, delegateQueue: nil)
+        return (session, delegate)
+        #else
+        return (.shared, nil)
+        #endif
     }
 
     func login(email: String, password: String) async throws -> LoginResponse {
@@ -99,5 +117,19 @@ final class APIClient {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+}
+
+private final class DevelopmentServerTrustDelegate: NSObject, URLSessionDelegate {
+    func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+              challenge.protectionSpace.host == "dev.local.makenoise.app",
+              let trust = challenge.protectionSpace.serverTrust else {
+            completionHandler(.performDefaultHandling, nil)
+            return
+        }
+
+        let credential = URLCredential(trust: trust)
+        completionHandler(.useCredential, credential)
     }
 }
