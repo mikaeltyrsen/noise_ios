@@ -5,7 +5,7 @@ enum APIEnvironment {
         #if targetEnvironment(simulator)
         return URL(string: "http://dev.local.makenoise.app/api/v1/")!
         #else
-        return URL(string: "https://makenoise.app/api/v1/")!
+        return URL(string: "http://makenoise.app/api/v1/")!
         #endif
     }
 }
