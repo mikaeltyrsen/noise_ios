@@ -1,0 +1,65 @@
+### Xcode ###
+DerivedData/
+build/
+*.xcuserstate
+*.xcscmblueprint
+
+# User-specific Xcode settings
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
+
+# Xcode project files that should NOT be shared
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+
+### Swift Package Manager ###
+.swiftpm/
+.build/
+Packages/
+
+### CocoaPods (if used later) ###
+Pods/
+Podfile.lock
+
+### Carthage (if used) ###
+Carthage/
+Carthage/Build/
+
+### Fastlane ###
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+### Archives ###
+*.xcarchive
+
+### iOS build artifacts ###
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+### Simulator logs ###
+coreSimulator/
+*.simstate
+
+### SwiftLint ###
+.swiftlint_tmp/
+
+### macOS stuff ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Thumbnails ###
+._*
+
+### Files that can appear on external disk or network volumes ###
+.Spotlight-V100
+.Trashes
+
+### Git ###
+*.orig
