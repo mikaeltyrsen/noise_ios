@@ -3,7 +3,7 @@ import Foundation
 enum APIEnvironment {
     static var baseURL: URL {
         #if targetEnvironment(simulator)
-        return URL(string: "https://dev.local.makenoise.app/api/v1/")!
+        return URL(string: "https://dev.server.makenoise.app/api/v1/")!
         #else
         return URL(string: "https://makenoise.app/api/v1/")!
         #endif
@@ -123,7 +123,7 @@ final class APIClient {
 private final class DevelopmentServerTrustDelegate: NSObject, URLSessionDelegate {
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-              challenge.protectionSpace.host == "dev.local.makenoise.app",
+              challenge.protectionSpace.host == "dev.server.makenoise.app",
               let trust = challenge.protectionSpace.serverTrust else {
             completionHandler(.performDefaultHandling, nil)
             return
