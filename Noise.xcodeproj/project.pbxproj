@@ -8,25 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		075456162ED5C9E800C45739 /* NoiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456152ED5C9E800C45739 /* NoiseApp.swift */; };
-                075456182ED5C9E800C45739 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456172ED5C9E800C45739 /* ContentView.swift */; };
-                0754561A2ED5C9EA00C45739 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075456192ED5C9EA00C45739 /* Assets.xcassets */; };
-                0754561D2ED5C9EA00C45739 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0754561C2ED5C9EA00C45739 /* Preview Assets.xcassets */; };
-                A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */; };
-                A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */; };
-                B1487AFB2F0B91C900DE5E7D /* BackgroundVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */; };
-                B1F9DE8D2F0B5CFC0002FB59 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */; };
+		075456182ED5C9E800C45739 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456172ED5C9E800C45739 /* ContentView.swift */; };
+		0754561A2ED5C9EA00C45739 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075456192ED5C9EA00C45739 /* Assets.xcassets */; };
+		0754561D2ED5C9EA00C45739 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0754561C2ED5C9EA00C45739 /* Preview Assets.xcassets */; };
+		0754569C2ED5E31F00C45739 /* static_noise_background.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0754569A2ED5E31F00C45739 /* static_noise_background.mp4 */; };
+		A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */; };
+		A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */; };
+		B1487AFB2F0B91C900DE5E7D /* BackgroundVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */; };
+		B1F9DE8D2F0B5CFC0002FB59 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		075456122ED5C9E800C45739 /* Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noise.app; sourceTree = BUILT_PRODUCTS_DIR; };
-                075456152ED5C9E800C45739 /* NoiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseApp.swift; sourceTree = "<group>"; };
-                075456172ED5C9E800C45739 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-                075456192ED5C9EA00C45739 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-                0754561C2ED5C9EA00C45739 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-                A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-                A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-                B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundVideoView.swift; sourceTree = "<group>"; };
-B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		075456152ED5C9E800C45739 /* NoiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseApp.swift; sourceTree = "<group>"; };
+		075456172ED5C9E800C45739 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		075456192ED5C9EA00C45739 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		0754561C2ED5C9EA00C45739 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		0754569A2ED5E31F00C45739 /* static_noise_background.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = static_noise_background.mp4; sourceTree = "<group>"; };
+		0754569D2ED5E5DC00C45739 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundVideoView.swift; sourceTree = "<group>"; };
+		B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,67 +59,77 @@ B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */ = {isa = PBXFileReference; lastKn
 			name = Products;
 			sourceTree = "<group>";
 		};
-                075456142ED5C9E800C45739 /* Noise */ = {
-                        isa = PBXGroup;
-                        children = (
-                                B1F9DE8B2F0B5CFC0002FB59 /* Networking */,
-                                A0E20CE52F0A3D9B00F2A001 /* Features */,
-                                075456152ED5C9E800C45739 /* NoiseApp.swift */,
-                                075456172ED5C9E800C45739 /* ContentView.swift */,
-                                075456192ED5C9EA00C45739 /* Assets.xcassets */,
-                                0754561B2ED5C9EA00C45739 /* Preview Content */,
-                        );
-                        path = Noise;
-                        sourceTree = "<group>";
-                };
-                A0E20CE52F0A3D9B00F2A001 /* Features */ = {
-                        isa = PBXGroup;
-                        children = (
-                                A0E20CE62F0A3D9B00F2A001 /* Auth */,
-                        );
-                        path = Features;
-                        sourceTree = "<group>";
-                };
-                A0E20CE62F0A3D9B00F2A001 /* Auth */ = {
-                        isa = PBXGroup;
-                        children = (
-                                A0E20CE72F0A3D9B00F2A001 /* Views */,
-                                A0E20CE82F0A3D9B00F2A001 /* ViewModels */,
-                        );
-                        path = Auth;
-                        sourceTree = "<group>";
-                };
-A0E20CE72F0A3D9B00F2A001 /* Views */ = {
-isa = PBXGroup;
-children = (
-B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */,
-A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */,
-);
-path = Views;
-sourceTree = "<group>";
-};
-                A0E20CE82F0A3D9B00F2A001 /* ViewModels */ = {
-                        isa = PBXGroup;
-                        children = (
-                                A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */,
-                        );
-                        path = ViewModels;
-                        sourceTree = "<group>";
-                };
-                B1F9DE8B2F0B5CFC0002FB59 /* Networking */ = {
-                        isa = PBXGroup;
-                        children = (
-                                B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */,
-                        );
-                        path = Networking;
-                        sourceTree = "<group>";
-                };
-                0754561B2ED5C9EA00C45739 /* Preview Content */ = {
-                        isa = PBXGroup;
-                        children = (
+		075456142ED5C9E800C45739 /* Noise */ = {
+			isa = PBXGroup;
+			children = (
+				0754569D2ED5E5DC00C45739 /* Info.plist */,
+				0754569B2ED5E31F00C45739 /* Videos */,
+				B1F9DE8B2F0B5CFC0002FB59 /* Networking */,
+				A0E20CE52F0A3D9B00F2A001 /* Features */,
+				075456152ED5C9E800C45739 /* NoiseApp.swift */,
+				075456172ED5C9E800C45739 /* ContentView.swift */,
+				075456192ED5C9EA00C45739 /* Assets.xcassets */,
+				0754561B2ED5C9EA00C45739 /* Preview Content */,
+			);
+			path = Noise;
+			sourceTree = "<group>";
+		};
+		0754561B2ED5C9EA00C45739 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
 				0754561C2ED5C9EA00C45739 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		0754569B2ED5E31F00C45739 /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				0754569A2ED5E31F00C45739 /* static_noise_background.mp4 */,
+			);
+			path = Videos;
+			sourceTree = "<group>";
+		};
+		A0E20CE52F0A3D9B00F2A001 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A0E20CE62F0A3D9B00F2A001 /* Auth */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A0E20CE62F0A3D9B00F2A001 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				A0E20CE72F0A3D9B00F2A001 /* Views */,
+				A0E20CE82F0A3D9B00F2A001 /* ViewModels */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		A0E20CE72F0A3D9B00F2A001 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */,
+				A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A0E20CE82F0A3D9B00F2A001 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B1F9DE8B2F0B5CFC0002FB59 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				B1F9DE8C2F0B5CFC0002FB59 /* APIClient.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +190,7 @@ sourceTree = "<group>";
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0754569C2ED5E31F00C45739 /* static_noise_background.mp4 in Resources */,
 				0754561D2ED5C9EA00C45739 /* Preview Assets.xcassets in Resources */,
 				0754561A2ED5C9EA00C45739 /* Assets.xcassets in Resources */,
 			);
@@ -185,19 +199,19 @@ sourceTree = "<group>";
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-                0754560E2ED5C9E800C45739 /* Sources */ = {
-                        isa = PBXSourcesBuildPhase;
-                        buildActionMask = 2147483647;
-                        files = (
-                                B1487AFB2F0B91C900DE5E7D /* BackgroundVideoView.swift in Sources */,
-                                A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */,
-                                A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */,
-                                075456182ED5C9E800C45739 /* ContentView.swift in Sources */,
-                                B1F9DE8D2F0B5CFC0002FB59 /* APIClient.swift in Sources */,
-                                075456162ED5C9E800C45739 /* NoiseApp.swift in Sources */,
-                        );
-                        runOnlyForDeploymentPostprocessing = 0;
-                };
+		0754560E2ED5C9E800C45739 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1487AFB2F0B91C900DE5E7D /* BackgroundVideoView.swift in Sources */,
+				A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */,
+				A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */,
+				075456182ED5C9E800C45739 /* ContentView.swift in Sources */,
+				B1F9DE8D2F0B5CFC0002FB59 /* APIClient.swift in Sources */,
+				075456162ED5C9E800C45739 /* NoiseApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -331,6 +345,7 @@ sourceTree = "<group>";
 				DEVELOPMENT_TEAM = D6QVB66D66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Noise/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -360,6 +375,7 @@ sourceTree = "<group>";
 				DEVELOPMENT_TEAM = D6QVB66D66;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Noise/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
