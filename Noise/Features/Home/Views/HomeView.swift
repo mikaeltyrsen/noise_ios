@@ -4,14 +4,14 @@ struct HomeView: View {
     let user: APIUser
     var onLogout: () -> Void
 
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 2)
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 3)
 
     var body: some View {
         NavigationView {
             ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+                VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 12) {
-                        HStack(spacing: 12) {
+                        HStack(spacing: 24) {
                             AvatarView(avatarURL: user.avatarURL)
 
                             VStack(alignment: .leading, spacing: 4) {
@@ -33,18 +33,15 @@ struct HomeView: View {
                             Spacer()
                             StatView(title: "Following", value: user.followingCount)
                         }
-                    }
+                    }.padding()
 
-                    Text("Live recordings will appear here in a grid.")
-                        .foregroundColor(.secondary)
-
-                    LazyVGrid(columns: columns, spacing: 16) {
-                        ForEach(0..<6) { index in
+                    LazyVGrid(columns: columns, spacing: 1) {
+                        ForEach(0..<40) { index in
                             RecordingGridItem(title: "Recording #\(index + 1)")
                         }
-                    }
+                    }.padding(1)
                 }
-                .padding()
+                //.padding(1)
             }
             .navigationTitle("Home")
             .toolbar {
@@ -61,17 +58,17 @@ private struct RecordingGridItem: View {
 
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 14)
+            RoundedRectangle(cornerRadius: 0)
                 .fill(Color.gray.opacity(0.25))
                 .overlay(
                     ProceduralNoiseView()
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                        .clipShape(RoundedRectangle(cornerRadius: 0))
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 14)
+                    RoundedRectangle(cornerRadius: 0)
                         .fill(
                             LinearGradient(
-                                colors: [Color.black.opacity(0.45), Color.black.opacity(0.15)],
+                                colors: [Color.black.opacity(0.2), Color.black.opacity(0)],
                                 startPoint: .bottom,
                                 endPoint: .top
                             )
@@ -90,7 +87,7 @@ private struct RecordingGridItem: View {
             .padding()
         }
         .aspectRatio(3.0 / 4.0, contentMode: .fit)
-        .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
+        //.shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
     }
 }
 
