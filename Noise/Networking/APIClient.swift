@@ -27,6 +27,7 @@ enum APIClientError: LocalizedError {
     case invalidCredentials
     case invalidResponse
     case serverError
+    case message(String)
 
     var errorDescription: String? {
         switch self {
@@ -36,6 +37,8 @@ enum APIClientError: LocalizedError {
             return "Unable to process server response."
         case .serverError:
             return "Something went wrong. Please try again."
+        case .message(let message):
+            return message
         }
     }
 }
@@ -87,18 +90,28 @@ final class APIClient {
             throw APIClientError.invalidResponse
         }
 
-        if httpResponse.statusCode == 401 {
-            throw APIClientError.invalidCredentials
-        }
-
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw APIClientError.serverError
-        }
-
         let decoder = JSONDecoder()
         let loginResponse = try decoder.decode(LoginResponse.self, from: data)
 
+        if httpResponse.statusCode == 401 {
+            if let message = loginResponse.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            } else {
+                throw APIClientError.invalidCredentials
+            }
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            if let message = loginResponse.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
         guard loginResponse.success, let token = loginResponse.token else {
+            if let message = loginResponse.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
             throw APIClientError.invalidCredentials
         }
 
