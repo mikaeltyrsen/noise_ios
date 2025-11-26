@@ -125,32 +125,24 @@ private extension NoiseRenderer {
         return out;
     }
 
-    float hash(float2 p) {
-        return fract(sin(dot(p, float2(127.1, 311.7))) * 43758.5453123);
-    }
-
-    float noise(float2 p) {
-        float2 i = floor(p);
-        float2 f = fract(p);
-
-        float a = hash(i);
-        float b = hash(i + float2(1.0, 0.0));
-        float c = hash(i + float2(0.0, 1.0));
-        float d = hash(i + float2(1.0, 1.0));
-
-        float2 u = f * f * (3.0 - 2.0 * f);
-
-        return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+    float random3(float3 p) {
+        return fract(sin(dot(p, float3(127.1, 311.7, 74.7))) * 43758.5453123);
     }
 
     fragment float4 fragment_noise(
         VertexOut in [[stage_in]],
         constant float &time [[buffer(0)]],
         constant float2 &resolution [[buffer(1)]]) {
-        float2 uv = (in.position.xy * 0.5 + 0.5) * resolution / 2.0;
-        float movement = time * 0.6;
-        float grain = noise(uv * 0.85 + float2(movement, -movement));
-        return float4(float3(grain), 1.0);
+        float2 uv = (in.position.xy * 0.5 + 0.5) * resolution;
+
+        // Introduce a frame-based seed so the grain changes every redraw,
+        // mimicking classic television static.
+        float frame = floor(time * 90.0);
+        float grain = random3(float3(floor(uv), frame));
+
+        // Push the distribution toward stark black and white noise.
+        float blackAndWhite = step(0.5, grain);
+        return float4(float3(blackAndWhite), 1.0);
     }
     """
 }
