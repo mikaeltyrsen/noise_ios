@@ -11,9 +11,21 @@ enum APIEnvironment {
 }
 
 struct APIUser: Decodable {
-    let id: Int
+    let id: String
     let email: String
     let username: String
+    let displayName: String?
+    let avatarURL: String?
+    let status: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case email
+        case username
+        case displayName = "display_name"
+        case avatarURL = "avatar_url"
+        case status
+    }
 }
 
 struct SessionResponse: Decodable {
@@ -36,6 +48,12 @@ struct LoginResponse: Decodable {
     var resolvedToken: String? {
         session?.token ?? token
     }
+}
+
+struct CurrentUserResponse: Decodable {
+    let success: Bool
+    let user: APIUser?
+    let message: String?
 }
 
 enum APIClientError: LocalizedError {
@@ -139,6 +157,32 @@ final class APIClient {
 
         authToken = token
         return loginResponse
+    }
+
+    func clearAuthToken() {
+        authToken = nil
+    }
+
+    func fetchCurrentUser() async throws -> APIUser {
+        var request = try authorizedRequest(for: "users/me.php")
+        request.httpMethod = "GET"
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let userResponse = try decoder.decode(CurrentUserResponse.self, from: data)
+
+        guard (200...299).contains(httpResponse.statusCode), userResponse.success, let user = userResponse.user else {
+            if let message = userResponse.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
+        return user
     }
 
     func authorizedRequest(for path: String, method: String = "GET") throws -> URLRequest {
