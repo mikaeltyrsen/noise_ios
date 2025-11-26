@@ -97,6 +97,7 @@ private final class NoiseRenderer: NSObject, MTKViewDelegate {
         var time = elapsed
 
         encoder.setRenderPipelineState(pipelineState)
+        encoder.setCullMode(.none)
         encoder.setVertexBytes(vertices, length: MemoryLayout<SIMD2<Float>>.stride * vertices.count, index: 0)
         encoder.setFragmentBytes(&time, length: MemoryLayout<Float>.stride, index: 0)
         encoder.setFragmentBytes(&resolution, length: MemoryLayout<SIMD2<Float>>.stride, index: 1)
