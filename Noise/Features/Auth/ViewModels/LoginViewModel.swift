@@ -8,9 +8,11 @@ final class LoginViewModel: ObservableObject {
     @Published var errorMessage: String?
 
     private let apiClient: APIClient
+    private let onLogin: (APIUser) -> Void
 
-    init(apiClient: APIClient = .shared) {
+    init(apiClient: APIClient = .shared, onLogin: @escaping (APIUser) -> Void) {
         self.apiClient = apiClient
+        self.onLogin = onLogin
     }
 
     var isLoginEnabled: Bool {
@@ -33,16 +35,25 @@ final class LoginViewModel: ObservableObject {
                     emailOrUsername: emailOrUsername.trimmingCharacters(in: .whitespacesAndNewlines),
                     password: password
                 )
-                // Handle successful login flow, e.g., navigate to the main app experience.
+                let user = try await apiClient.fetchCurrentUser()
+                await MainActor.run {
+                    self.onLogin(user)
+                }
             } catch {
                 if let apiError = error as? APIClientError {
-                    self.errorMessage = apiError.localizedDescription
+                    await MainActor.run {
+                        self.errorMessage = apiError.localizedDescription
+                    }
                 } else {
-                    self.errorMessage = "Unable to login. Please try again later."
+                    await MainActor.run {
+                        self.errorMessage = "Unable to login. Please try again later."
+                    }
                 }
             }
 
-            self.isLoading = false
+            await MainActor.run {
+                self.isLoading = false
+            }
         }
     }
 }

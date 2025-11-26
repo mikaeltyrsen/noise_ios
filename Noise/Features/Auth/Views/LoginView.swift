@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = LoginViewModel()
+    @StateObject private var viewModel: LoginViewModel
+
+    init(onLogin: @escaping (APIUser) -> Void) {
+        _viewModel = StateObject(wrappedValue: LoginViewModel(onLogin: onLogin))
+    }
 
     var body: some View {
         ZStack {
@@ -88,5 +92,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView { _ in }
 }
