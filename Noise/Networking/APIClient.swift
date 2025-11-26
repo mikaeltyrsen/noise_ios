@@ -11,14 +11,24 @@ enum APIEnvironment {
 }
 
 struct APIUser: Decodable {
-    let id: String
-    let name: String
+    let id: Int
     let email: String
+    let username: String
+}
+
+struct SessionResponse: Decodable {
+    let token: String
+    let expiresAt: String
+
+    enum CodingKeys: String, CodingKey {
+        case token
+        case expiresAt = "expires_at"
+    }
 }
 
 struct LoginResponse: Decodable {
     let success: Bool
-    let token: String?
+    let session: SessionResponse?
     let user: APIUser?
     let message: String?
 }
@@ -71,7 +81,7 @@ final class APIClient {
         #endif
     }
 
-    func login(email: String, password: String) async throws -> LoginResponse {
+    func login(emailOrUsername: String, password: String) async throws -> LoginResponse {
         let url = APIEnvironment.baseURL.appendingPathComponent("auth/login.php")
 
         var request = URLRequest(url: url)
@@ -80,7 +90,7 @@ final class APIClient {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
         let body: [String: String] = [
-            "email": email,
+            "email_or_username": emailOrUsername,
             "password": password
         ]
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -108,7 +118,7 @@ final class APIClient {
             throw APIClientError.serverError
         }
 
-        guard loginResponse.success, let token = loginResponse.token else {
+        guard loginResponse.success, let token = loginResponse.session?.token else {
             if let message = loginResponse.message, !message.isEmpty {
                 throw APIClientError.message(message)
             }
