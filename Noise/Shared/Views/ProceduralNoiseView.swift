@@ -49,6 +49,7 @@ private final class NoiseRenderer: NSObject, MTKViewDelegate {
     private let commandQueue: MTLCommandQueue
     private let pipelineState: MTLRenderPipelineState
     private var startTime: CFTimeInterval = CACurrentMediaTime()
+    private var viewportSize: CGSize = .zero
 
     private let vertices: [SIMD2<Float>] = [
         [-1, -1], [1, -1],
@@ -82,7 +83,9 @@ private final class NoiseRenderer: NSObject, MTKViewDelegate {
         super.init()
     }
 
-    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {}
+    func mtkView(_ view: MTKView, drawableSizeWillChange size: CGSize) {
+        viewportSize = size
+    }
 
     func draw(in view: MTKView) {
         guard
@@ -93,10 +96,19 @@ private final class NoiseRenderer: NSObject, MTKViewDelegate {
         else { return }
 
         let elapsed = Float(CACurrentMediaTime() - startTime) * animationSpeed
-        var resolution = SIMD2<Float>(Float(view.drawableSize.width), Float(view.drawableSize.height))
+        let drawableSize = viewportSize == .zero ? view.drawableSize : viewportSize
+        var resolution = SIMD2<Float>(Float(drawableSize.width), Float(drawableSize.height))
         var time = elapsed
 
         encoder.setRenderPipelineState(pipelineState)
+        encoder.setViewport(MTLViewport(
+            originX: 0,
+            originY: 0,
+            width: Double(drawableSize.width),
+            height: Double(drawableSize.height),
+            znear: 0,
+            zfar: 1
+        ))
         encoder.setCullMode(.none)
         encoder.setVertexBytes(vertices, length: MemoryLayout<SIMD2<Float>>.stride * vertices.count, index: 0)
         encoder.setFragmentBytes(&time, length: MemoryLayout<Float>.stride, index: 0)
