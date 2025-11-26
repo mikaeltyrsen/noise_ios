@@ -1,13 +1,11 @@
 import SwiftUI
+import AVFoundation
 
 struct HomeView: View {
     let user: APIUser
     var onLogout: () -> Void
 
-    private let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 2)
 
     var body: some View {
         NavigationView {
@@ -43,18 +41,7 @@ struct HomeView: View {
 
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(0..<6) { index in
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.gray.opacity(0.15))
-                                .frame(height: 120)
-                                .overlay(
-                                    VStack {
-                                        Image(systemName: "waveform")
-                                            .font(.title)
-                                            .foregroundColor(.blue)
-                                        Text("Recording #\(index + 1)")
-                                            .foregroundColor(.secondary)
-                                    }
-                                )
+                            RecordingGridItem(title: "Recording #\(index + 1)")
                         }
                     }
                 }
@@ -67,6 +54,84 @@ struct HomeView: View {
                 }
             }
         }
+    }
+}
+
+private struct RecordingGridItem: View {
+    let title: String
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: 14)
+                .fill(Color.gray.opacity(0.25))
+                .overlay(
+                    NoiseBackgroundView(videoName: "static_noise_background")
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.black.opacity(0.45), Color.black.opacity(0.15)],
+                                startPoint: .bottom,
+                                endPoint: .top
+                            )
+                        )
+                )
+
+            VStack(spacing: 8) {
+                Image(systemName: "waveform")
+                    .font(.title2)
+                    .foregroundColor(.white)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(.white)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding()
+        }
+        .aspectRatio(3.0 / 4.0, contentMode: .fit)
+        .shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
+    }
+}
+
+private struct NoiseBackgroundView: UIViewRepresentable {
+    let videoName: String
+
+    func makeUIView(context: Context) -> LoopingPlayerView {
+        LoopingPlayerView(videoName: videoName)
+    }
+
+    func updateUIView(_ uiView: LoopingPlayerView, context: Context) {}
+}
+
+private final class LoopingPlayerView: UIView {
+    private let player = AVQueuePlayer()
+    private var looper: AVPlayerLooper?
+    private let playerLayer = AVPlayerLayer()
+
+    init(videoName: String) {
+        super.init(frame: .zero)
+
+        playerLayer.player = player
+        playerLayer.videoGravity = .resizeAspectFill
+        layer.addSublayer(playerLayer)
+
+        if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
+            let item = AVPlayerItem(url: url)
+            looper = AVPlayerLooper(player: player, templateItem: item)
+            player.isMuted = true
+            player.play()
+        }
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        playerLayer.frame = bounds
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
