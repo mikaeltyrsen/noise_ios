@@ -20,6 +20,26 @@ struct APIUser: Decodable {
     let followerCount: Int
     let followingCount: Int
 
+    init(
+        id: String,
+        email: String,
+        username: String,
+        displayName: String? = nil,
+        avatarURL: String? = nil,
+        status: String? = nil,
+        followerCount: Int = 0,
+        followingCount: Int = 0
+    ) {
+        self.id = id
+        self.email = email
+        self.username = username
+        self.displayName = displayName
+        self.avatarURL = avatarURL
+        self.status = status
+        self.followerCount = followerCount
+        self.followingCount = followingCount
+    }
+
     enum CodingKeys: String, CodingKey {
         case id
         case email
@@ -186,7 +206,7 @@ final class APIClient {
 
     func fetchCurrentUser() async throws -> APIUser {
         var request = try authorizedRequest(for: "users/me.php")
-        request.httpMethod = "GET"
+        request.httpMethod = "POST"
 
         let (data, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
@@ -211,7 +231,7 @@ final class APIClient {
         return user
     }
 
-    func authorizedRequest(for path: String, method: String = "GET") throws -> URLRequest {
+    func authorizedRequest(for path: String, method: String = "POST") throws -> URLRequest {
         guard let token = authToken else {
             throw APIClientError.invalidCredentials
         }
