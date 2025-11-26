@@ -5,18 +5,22 @@ struct ContentView: View {
     @State private var isCheckingSession = true
 
     var body: some View {
-        if let user = currentUser {
-            HomeView(user: user) {
-                APIClient.shared.clearAuthToken()
-                currentUser = nil
+        Group {
+            if let user = currentUser {
+                HomeView(user: user) {
+                    APIClient.shared.clearAuthToken()
+                    currentUser = nil
+                }
+            } else if isCheckingSession, APIClient.shared.authToken != nil {
+                ProgressView()
+            } else {
+                LoginView { user in
+                    currentUser = user
+                    isCheckingSession = false
+                }
             }
-        } else {
-            LoginView { user in
-                currentUser = user
-                isCheckingSession = false
-            }
-            .task(loadExistingSession)
         }
+        .task(loadExistingSession)
     }
 
     @Sendable
