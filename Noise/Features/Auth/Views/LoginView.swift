@@ -9,7 +9,7 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            BackgroundVideoView(videoName: "static_noise_background")
+            BackgroundVideoView()
                 .opacity(0.85)
             Color.black.opacity(0.35)
                 .ignoresSafeArea()

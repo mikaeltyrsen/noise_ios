@@ -1,5 +1,4 @@
 import SwiftUI
-import AVFoundation
 
 struct HomeView: View {
     let user: APIUser
@@ -62,7 +61,7 @@ private struct RecordingGridItem: View {
             RoundedRectangle(cornerRadius: 0)
                 .fill(Color.gray.opacity(0.25))
                 .overlay(
-                    NoiseBackgroundView(videoName: "static_noise_background")
+                    ProceduralNoiseView()
                         .clipShape(RoundedRectangle(cornerRadius: 0))
                 )
                 .overlay(
@@ -89,46 +88,6 @@ private struct RecordingGridItem: View {
         }
         .aspectRatio(3.0 / 4.0, contentMode: .fit)
         //.shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
-    }
-}
-
-private struct NoiseBackgroundView: UIViewRepresentable {
-    let videoName: String
-
-    func makeUIView(context: Context) -> LoopingPlayerView {
-        LoopingPlayerView(videoName: videoName)
-    }
-
-    func updateUIView(_ uiView: LoopingPlayerView, context: Context) {}
-}
-
-private final class LoopingPlayerView: UIView {
-    private let player = AVQueuePlayer()
-    private var looper: AVPlayerLooper?
-    private let playerLayer = AVPlayerLayer()
-
-    init(videoName: String) {
-        super.init(frame: .zero)
-
-        playerLayer.player = player
-        playerLayer.videoGravity = .resizeAspectFill
-        layer.addSublayer(playerLayer)
-
-        if let url = Bundle.main.url(forResource: videoName, withExtension: "mp4") {
-            let item = AVPlayerItem(url: url)
-            looper = AVPlayerLooper(player: player, templateItem: item)
-            player.isMuted = true
-            player.play()
-        }
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        playerLayer.frame = bounds
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
