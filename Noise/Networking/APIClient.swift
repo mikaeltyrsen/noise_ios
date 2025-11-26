@@ -81,9 +81,10 @@ final class APIClient {
 
     private let session: URLSession
     private let sessionDelegate: URLSessionDelegate?
+    private let tokenStore: TokenStore
     private(set) var authToken: String?
 
-    init(session: URLSession? = nil) {
+    init(session: URLSession? = nil, tokenStore: TokenStore = .shared) {
         if let session {
             self.session = session
             self.sessionDelegate = nil
@@ -92,6 +93,8 @@ final class APIClient {
             self.session = createdSession
             self.sessionDelegate = delegate
         }
+        self.tokenStore = tokenStore
+        self.authToken = tokenStore.load()
     }
 
     private static func makeSession() -> (URLSession, URLSessionDelegate?) {
@@ -156,11 +159,13 @@ final class APIClient {
         }
 
         authToken = token
+        tokenStore.save(token)
         return loginResponse
     }
 
     func clearAuthToken() {
         authToken = nil
+        tokenStore.clear()
     }
 
     func fetchCurrentUser() async throws -> APIUser {
@@ -174,6 +179,11 @@ final class APIClient {
 
         let decoder = JSONDecoder()
         let userResponse = try decoder.decode(CurrentUserResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
 
         guard (200...299).contains(httpResponse.statusCode), userResponse.success, let user = userResponse.user else {
             if let message = userResponse.message, !message.isEmpty {
