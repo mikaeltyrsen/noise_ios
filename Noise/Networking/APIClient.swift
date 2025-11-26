@@ -17,6 +17,8 @@ struct APIUser: Decodable {
     let displayName: String?
     let avatarURL: String?
     let status: String?
+    let followerCount: Int
+    let followingCount: Int
 
     enum CodingKeys: String, CodingKey {
         case id
@@ -25,6 +27,20 @@ struct APIUser: Decodable {
         case displayName = "display_name"
         case avatarURL = "avatar_url"
         case status
+        case followerCount = "follower_count"
+        case followingCount = "following_count"
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        email = try container.decode(String.self, forKey: .email)
+        username = try container.decode(String.self, forKey: .username)
+        displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+        avatarURL = try container.decodeIfPresent(String.self, forKey: .avatarURL)
+        status = try container.decodeIfPresent(String.self, forKey: .status)
+        followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount) ?? 0
+        followingCount = try container.decodeIfPresent(Int.self, forKey: .followingCount) ?? 0
     }
 }
 
