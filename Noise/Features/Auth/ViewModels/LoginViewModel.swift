@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 final class LoginViewModel: ObservableObject {
-    @Published var email: String = ""
+    @Published var emailOrUsername: String = ""
     @Published var password: String = ""
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -14,7 +14,7 @@ final class LoginViewModel: ObservableObject {
     }
 
     var isLoginEnabled: Bool {
-        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !emailOrUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         !password.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
         !isLoading
     }
@@ -30,7 +30,7 @@ final class LoginViewModel: ObservableObject {
 
             do {
                 _ = try await apiClient.login(
-                    email: email.trimmingCharacters(in: .whitespacesAndNewlines),
+                    emailOrUsername: emailOrUsername.trimmingCharacters(in: .whitespacesAndNewlines),
                     password: password
                 )
                 // Handle successful login flow, e.g., navigate to the main app experience.
