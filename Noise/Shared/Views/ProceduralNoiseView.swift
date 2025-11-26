@@ -3,11 +3,13 @@ import MetalKit
 
 struct ProceduralNoiseView: View {
     var animationSpeed: Float = 0.25
+    var noiseOpacity: Double = 0.1
 
     var body: some View {
         NoiseShaderView(animationSpeed: animationSpeed)
             .ignoresSafeArea()
             .allowsHitTesting(false)
+            .opacity(noiseOpacity)
     }
 }
 
