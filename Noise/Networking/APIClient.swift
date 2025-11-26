@@ -29,8 +29,13 @@ struct SessionResponse: Decodable {
 struct LoginResponse: Decodable {
     let success: Bool
     let session: SessionResponse?
+    let token: String?
     let user: APIUser?
     let message: String?
+
+    var resolvedToken: String? {
+        session?.token ?? token
+    }
 }
 
 enum APIClientError: LocalizedError {
@@ -118,7 +123,7 @@ final class APIClient {
             throw APIClientError.serverError
         }
 
-        guard loginResponse.success, let token = loginResponse.session?.token else {
+        guard loginResponse.success, let token = loginResponse.resolvedToken else {
             if let message = loginResponse.message, !message.isEmpty {
                 throw APIClientError.message(message)
             }
