@@ -91,15 +91,21 @@ final class APIClient {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        var components = URLComponents()
-        components.queryItems = [
-            URLQueryItem(name: "email_or_username", value: emailOrUsername),
-            URLQueryItem(name: "password", value: password)
-        ]
-        request.httpBody = components.percentEncodedQuery?.data(using: .utf8)
+        struct LoginRequest: Encodable {
+            let emailOrUsername: String
+            let password: String
+
+            enum CodingKeys: String, CodingKey {
+                case emailOrUsername = "email_or_username"
+                case password
+            }
+        }
+
+        let requestBody = LoginRequest(emailOrUsername: emailOrUsername, password: password)
+        request.httpBody = try JSONEncoder().encode(requestBody)
 
         let (data, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse else {
