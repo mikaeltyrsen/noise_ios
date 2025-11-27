@@ -2,7 +2,6 @@ import SwiftUI
 
 struct HomeView: View {
     let user: APIUser
-    var onLogout: () -> Void
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 3)
     private let recordings = (0..<40).map { Recording(id: $0, title: "1,34\($0 + 1)") }
@@ -55,11 +54,6 @@ struct HomeView: View {
                     //.padding(1)
                 }
                 //.navigationTitle("Home")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button("Logout", action: onLogout)
-                    }
-                }
 
                 if let selectedRecording {
                     LiveDetailView(recording: selectedRecording, namespace: namespace) {
@@ -71,6 +65,7 @@ struct HomeView: View {
                     .zIndex(1)
                 }
             }
+            .navigationBarHidden(true)
         }
     }
 }
@@ -179,6 +174,9 @@ private struct StatView: View {
         avatarURL: nil,
         status: "active",
         followerCount: 128,
-        followingCount: 64
-    )) { }
+        followingCount: 64,
+        bio: "Bio",
+        website: "https://example.com",
+        isPrivate: false
+    ))
 }

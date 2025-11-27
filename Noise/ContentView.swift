@@ -7,7 +7,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if let user = currentUser {
-                HomeView(user: user) {
+                MainTabView(user: user) {
                     APIClient.shared.clearAuthToken()
                     currentUser = nil
                 }

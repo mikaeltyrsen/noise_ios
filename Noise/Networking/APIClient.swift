@@ -19,6 +19,9 @@ struct APIUser: Decodable {
     let status: String?
     let followerCount: Int
     let followingCount: Int
+    let bio: String?
+    let website: String?
+    let isPrivate: Bool
 
     init(
         id: String,
@@ -28,7 +31,10 @@ struct APIUser: Decodable {
         avatarURL: String? = nil,
         status: String? = nil,
         followerCount: Int = 0,
-        followingCount: Int = 0
+        followingCount: Int = 0,
+        bio: String? = nil,
+        website: String? = nil,
+        isPrivate: Bool = false
     ) {
         self.id = id
         self.email = email
@@ -38,6 +44,9 @@ struct APIUser: Decodable {
         self.status = status
         self.followerCount = followerCount
         self.followingCount = followingCount
+        self.bio = bio
+        self.website = website
+        self.isPrivate = isPrivate
     }
 
     enum CodingKeys: String, CodingKey {
@@ -49,6 +58,9 @@ struct APIUser: Decodable {
         case status
         case followerCount = "follower_count"
         case followingCount = "following_count"
+        case bio
+        case website
+        case isPrivate = "is_private"
     }
 
     init(from decoder: Decoder) throws {
@@ -61,6 +73,9 @@ struct APIUser: Decodable {
         status = try container.decodeIfPresent(String.self, forKey: .status)
         followerCount = try container.decodeIfPresent(Int.self, forKey: .followerCount) ?? 0
         followingCount = try container.decodeIfPresent(Int.self, forKey: .followingCount) ?? 0
+        bio = try container.decodeIfPresent(String.self, forKey: .bio)
+        website = try container.decodeIfPresent(String.self, forKey: .website)
+        isPrivate = try container.decodeIfPresent(Bool.self, forKey: .isPrivate) ?? false
     }
 }
 
@@ -87,6 +102,12 @@ struct LoginResponse: Decodable {
 }
 
 struct CurrentUserResponse: Decodable {
+    let success: Bool
+    let user: APIUser?
+    let message: String?
+}
+
+struct UpdateSettingsResponse: Decodable {
     let success: Bool
     let user: APIUser?
     let message: String?
@@ -231,6 +252,98 @@ final class APIClient {
         return user
     }
 
+    func updateSettings(
+        username: String,
+        displayName: String?,
+        bio: String?,
+        website: String?,
+        isPrivate: Bool
+    ) async throws -> APIUser {
+        var request = try authorizedRequest(for: "users/settings.php")
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        struct UpdateSettingsRequest: Encodable {
+            let username: String
+            let displayName: String?
+            let bio: String?
+            let website: String?
+            let isPrivate: Bool
+
+            enum CodingKeys: String, CodingKey {
+                case username
+                case displayName = "display_name"
+                case bio
+                case website
+                case isPrivate = "is_private"
+            }
+        }
+
+        let requestBody = UpdateSettingsRequest(
+            username: username,
+            displayName: displayName,
+            bio: bio,
+            website: website,
+            isPrivate: isPrivate
+        )
+        request.httpBody = try JSONEncoder().encode(requestBody)
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(UpdateSettingsResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
+
+        guard (200...299).contains(httpResponse.statusCode), result.success, let user = result.user else {
+            if let message = result.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
+        return user
+    }
+
+    func uploadAvatar(imageData: Data, filename: String = "avatar.jpg") async throws -> APIUser {
+        var request = try authorizedRequest(for: "users/avatar.php")
+        request.httpMethod = "POST"
+
+        let boundary = UUID().uuidString
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        let body = makeMultipartBody(data: imageData, boundary: boundary, filename: filename, fieldName: "avatar")
+        request.httpBody = body
+
+        let (data, response) = try await session.upload(for: request, from: body)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(UpdateSettingsResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
+
+        guard (200...299).contains(httpResponse.statusCode), result.success, let user = result.user else {
+            if let message = result.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
+        return user
+    }
+
     func authorizedRequest(for path: String, method: String = "POST") throws -> URLRequest {
         guard let token = authToken else {
             throw APIClientError.invalidCredentials
@@ -242,6 +355,20 @@ final class APIClient {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         return request
+    }
+
+    private func makeMultipartBody(data: Data, boundary: String, filename: String, fieldName: String) -> Data {
+        var body = Data()
+        let lineBreak = "\r\n"
+
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"\(fieldName)\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(data)
+        body.append(lineBreak.data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        return body
     }
 }
 
