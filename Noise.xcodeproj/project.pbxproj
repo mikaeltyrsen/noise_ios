@@ -14,6 +14,8 @@
 		0754569C2ED5E31F00C45739 /* static_noise_background.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 0754569A2ED5E31F00C45739 /* static_noise_background.mp4 */; };
 		075456A52ED6872600C45739 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456A22ED6872600C45739 /* HomeView.swift */; };
 		075456A92ED8076600C45739 /* LiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456A82ED8076600C45739 /* LiveDetailView.swift */; };
+		075456AE2ED88AF000C45739 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456AA2ED88AF000C45739 /* MainTabView.swift */; };
+		075456AF2ED88AF000C45739 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456AC2ED88AF000C45739 /* SettingsView.swift */; };
 		A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */; };
 		A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */; };
 		B1487AFB2F0B91C900DE5E7D /* BackgroundVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1487AFA2F0B91C900DE5E7D /* BackgroundVideoView.swift */; };
@@ -32,6 +34,8 @@
 		0754569D2ED5E5DC00C45739 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		075456A22ED6872600C45739 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		075456A82ED8076600C45739 /* LiveDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveDetailView.swift; path = Features/Home/Views/LiveDetailView.swift; sourceTree = "<group>"; };
+		075456AA2ED88AF000C45739 /* MainTabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		075456AC2ED88AF000C45739 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		20DCFC430679462CBEBD2637 /* ProceduralNoiseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProceduralNoiseView.swift; sourceTree = "<group>"; };
 		A0E20CE92F0A3D9B00F2A001 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A0E20CEA2F0A3D9B00F2A001 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -70,6 +74,8 @@
 		075456142ED5C9E800C45739 /* Noise */ = {
 			isa = PBXGroup;
 			children = (
+				075456AB2ED88AF000C45739 /* Main */,
+				075456AD2ED88AF000C45739 /* Settings */,
 				075456A82ED8076600C45739 /* LiveDetailView.swift */,
 				075456A42ED6872600C45739 /* Home */,
 				0754569D2ED5E5DC00C45739 /* Info.plist */,
@@ -116,6 +122,24 @@
 			);
 			name = Home;
 			path = Features/Home;
+			sourceTree = "<group>";
+		};
+		075456AB2ED88AF000C45739 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				075456AA2ED88AF000C45739 /* MainTabView.swift */,
+			);
+			name = Main;
+			path = Features/Main;
+			sourceTree = "<group>";
+		};
+		075456AD2ED88AF000C45739 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				075456AC2ED88AF000C45739 /* SettingsView.swift */,
+			);
+			name = Settings;
+			path = Features/Settings;
 			sourceTree = "<group>";
 		};
 		A0E20CE52F0A3D9B00F2A001 /* Features */ = {
@@ -253,9 +277,11 @@
 				A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */,
 				075456182ED5C9E800C45739 /* ContentView.swift in Sources */,
 				B1F9DE9E2F0B5F4A0002FB59 /* TokenStore.swift in Sources */,
+				075456AE2ED88AF000C45739 /* MainTabView.swift in Sources */,
 				EAD4536ABC19406FA435CEFD /* ProceduralNoiseView.swift in Sources */,
 				075456A52ED6872600C45739 /* HomeView.swift in Sources */,
 				075456A92ED8076600C45739 /* LiveDetailView.swift in Sources */,
+				075456AF2ED88AF000C45739 /* SettingsView.swift in Sources */,
 				B1F9DE8D2F0B5CFC0002FB59 /* APIClient.swift in Sources */,
 				075456162ED5C9E800C45739 /* NoiseApp.swift in Sources */,
 			);

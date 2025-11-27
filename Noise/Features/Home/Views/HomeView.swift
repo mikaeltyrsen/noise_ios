@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeView: View {
     let user: APIUser
 
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 1), count: 3)
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     private let recordings = (0..<40).map { Recording(id: $0, title: "1,34\($0 + 1)") }
 
     @Namespace private var namespace
@@ -40,7 +40,7 @@ struct HomeView: View {
 
                         }.padding()
 
-                        LazyVGrid(columns: columns, spacing: 1) {
+                        LazyVGrid(columns: columns, spacing: 0) {
                             ForEach(recordings) { recording in
                                 RecordingGridItem(recording: recording, namespace: namespace)
                                     .onTapGesture {
@@ -49,7 +49,7 @@ struct HomeView: View {
                                         }
                                     }
                             }
-                        }.padding(1)
+                        }.padding(0)
                     }
                     //.padding(1)
                 }
