@@ -11,12 +11,13 @@ struct HomeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 12) {
-                        HStack(spacing: 24) {
-                            AvatarView(avatarURL: user.avatarURL)
+                        HStack(spacing: 12) {
+                            AvatarView(avatarURL: user.avatarURL, size: 50)
 
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(user.username)
-                                    .font(.largeTitle.bold())
+                                    .font(.title2)
+                                    .fontWeight(.bold)
 
                                 if let displayName = user.displayName {
                                     Text(displayName)
@@ -24,26 +25,26 @@ struct HomeView: View {
                                         .foregroundColor(.secondary)
                                 }
                             }
-
                             Spacer()
+                            HStack(spacing: 20) {
+                                StatView(title: "Followers", value: user.followerCount)
+                                StatView(title: "Following", value: user.followingCount)
+                            }
+
                         }
 
-                        HStack {
-                            StatView(title: "Followers", value: user.followerCount)
-                            Spacer()
-                            StatView(title: "Following", value: user.followingCount)
-                        }
+                        
                     }.padding()
 
                     LazyVGrid(columns: columns, spacing: 1) {
                         ForEach(0..<40) { index in
-                            RecordingGridItem(title: "Recording #\(index + 1)")
+                            RecordingGridItem(title: "1,34\(index + 1)")
                         }
                     }.padding(1)
                 }
                 //.padding(1)
             }
-            .navigationTitle("Home")
+            //.navigationTitle("Home")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Logout", action: onLogout)
@@ -59,7 +60,7 @@ private struct RecordingGridItem: View {
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 0)
-                .fill(Color.gray.opacity(0.25))
+                .fill(Color(hue: 1.0, saturation: 0.0, brightness: 0.231))
                 .overlay(
                     ProceduralNoiseView()
                         .clipShape(RoundedRectangle(cornerRadius: 0))
@@ -68,23 +69,30 @@ private struct RecordingGridItem: View {
                     RoundedRectangle(cornerRadius: 0)
                         .fill(
                             LinearGradient(
-                                colors: [Color.black.opacity(0.2), Color.black.opacity(0)],
+                                colors: [Color.black.opacity(0.5), Color.black.opacity(0)],
                                 startPoint: .bottom,
                                 endPoint: .top
                             )
                         )
                 )
 
-            VStack(spacing: 8) {
-                Image(systemName: "waveform")
-                    .font(.title2)
-                    .foregroundColor(.white)
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
+            HStack( spacing: 3) {
+                //AvatarView(avatarURL: "", size: 15)
+                HStack( spacing: 3) {
+                    Image(systemName: "eye.fill")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white)
+                    Text(title)
+                        .font(.system(size: 10))
+                        .foregroundColor(.white)
+                }
+                Spacer()
+                Image(systemName: "rectangle.expand.vertical")
+                    .font(.system(size: 10))
                     .foregroundColor(.white)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomLeading)
+            .padding(10)
         }
         .aspectRatio(3.0 / 4.0, contentMode: .fit)
         //.shadow(color: Color.black.opacity(0.2), radius: 6, x: 0, y: 4)
@@ -93,6 +101,7 @@ private struct RecordingGridItem: View {
 
 private struct AvatarView: View {
     let avatarURL: String?
+    let size: CGFloat
 
     var body: some View {
         Group {
@@ -106,10 +115,10 @@ private struct AvatarView: View {
                 }
             } else {
                 Circle()
-                    .fill(Color.blue.opacity(0.3))
+                    .fill(Color.accentColor.opacity(1))
             }
         }
-        .frame(width: 64, height: 64)
+        .frame(width: size, height: size)
         .clipShape(Circle())
     }
 }
@@ -119,12 +128,15 @@ private struct StatView: View {
     let value: Int
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .center, spacing: 4) {
             Text("\(value)")
                 .font(.title3.bold())
                 .foregroundColor(.primary)
             Text(title)
-                .font(.subheadline)
+                .lineLimit(1)
+                .allowsTightening(true)
+                .truncationMode(.tail)
+                .font(.footnote)
                 .foregroundColor(.secondary)
         }
     }

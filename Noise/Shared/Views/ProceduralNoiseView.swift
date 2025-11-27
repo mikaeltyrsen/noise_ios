@@ -3,11 +3,10 @@ import MetalKit
 
 struct ProceduralNoiseView: View {
     var animationSpeed: Float = 0.25
-    var noiseOpacity: Double = 0.1
+    var noiseOpacity: Double = 0.5
 
     var body: some View {
         NoiseShaderView(animationSpeed: animationSpeed)
-            .ignoresSafeArea()
             .allowsHitTesting(false)
             .opacity(noiseOpacity)
     }
@@ -148,7 +147,8 @@ private extension NoiseRenderer {
         VertexOut in [[stage_in]],
         constant float &time [[buffer(0)]],
         constant float2 &resolution [[buffer(1)]]) {
-        float2 uv = (in.position.xy * 0.5 + 0.5) * resolution;
+        // Use position directly relative to resolution (no coordinate transformation)
+        float2 uv = in.position.xy;
 
         // Introduce a frame-based seed so the grain changes every redraw,
         // mimicking classic television static.
