@@ -14,74 +14,36 @@ struct MainTabView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
-            Group {
-                switch selectedTab {
-                case .home:
-                    HomeView(user: currentUser)
-                case .makeNoise:
-                    MakeNoiseView()
-                case .search:
-                    SearchView()
-                case .settings:
-                    SettingsView(
-                        user: currentUser,
-                        onUserUpdated: { updated in currentUser = updated },
-                        onLogout: onLogout
-                    )
+        TabView(selection: $selectedTab) {
+            HomeView(user: currentUser)
+                .tabItem {
+                    Label("Home", systemImage: "house.fill")
                 }
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .tag(Tab.home)
 
-            FloatingTabBar(selectedTab: $selectedTab)
-                .padding(.horizontal, 24)
-                .padding(.bottom, 16)
-        }
-        .background(Color(.systemBackground).ignoresSafeArea())
-        .animation(.easeInOut(duration: 0.2), value: selectedTab)
-    }
-}
-
-private struct FloatingTabBar: View {
-    @Binding var selectedTab: MainTabView.Tab
-
-    private struct TabItem: Identifiable {
-        let id: MainTabView.Tab
-        let title: String
-        let systemImage: String
-    }
-
-    private let items: [TabItem] = [
-        .init(id: .home, title: "Home", systemImage: "house.fill"),
-        .init(id: .makeNoise, title: "Make Noise", systemImage: "plus.circle.fill"),
-        .init(id: .search, title: "Search", systemImage: "magnifyingglass"),
-        .init(id: .settings, title: "Settings", systemImage: "gear")
-    ]
-
-    var body: some View {
-        HStack(spacing: 12) {
-            ForEach(items) { item in
-                Button {
-                    selectedTab = item.id
-                } label: {
-                    VStack(spacing: 6) {
-                        Image(systemName: item.systemImage)
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(selectedTab == item.id ? .primary : .secondary)
-                        Text(item.title)
-                            .font(.footnote.weight(.semibold))
-                            .foregroundColor(selectedTab == item.id ? .primary : .secondary)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
+            MakeNoiseView()
+                .tabItem {
+                    Label("Make Noise", systemImage: "plus.circle.fill")
                 }
-                .buttonStyle(.plain)
+                .tag(Tab.makeNoise)
+
+            SearchView()
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass")
+                }
+                .tag(Tab.search)
+
+            SettingsView(
+                user: currentUser,
+                onUserUpdated: { updated in currentUser = updated },
+                onLogout: onLogout
+            )
+            .tabItem {
+                Label("Settings", systemImage: "gear")
             }
+            .tag(Tab.settings)
         }
-        .padding(.horizontal, 12)
-        .background(.ultraThinMaterial)
-        .clipShape(Capsule())
-        .shadow(radius: 6, y: 2)
+        .tabViewStyle(.automatic)
     }
 }
 
