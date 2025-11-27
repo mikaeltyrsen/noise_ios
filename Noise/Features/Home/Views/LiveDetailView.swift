@@ -34,10 +34,17 @@ struct LiveDetailView: View {
 }
 
 #Preview {
+    LiveDetailPreview()
+}
+
+private struct LiveDetailPreview: View {
     @Namespace var namespace
-    LiveDetailView(
-        recording: Recording(id: 1, title: "Example"),
-        namespace: namespace,
-        onDismiss: {}
-    )
+
+    var body: some View {
+        LiveDetailView(
+            recording: Recording(id: 1, title: "Example"),
+            namespace: namespace,
+            onDismiss: {}
+        )
+    }
 }
