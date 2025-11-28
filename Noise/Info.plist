@@ -2,11 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>dev.server.makenoise.app</key>
+        <key>NSAppTransportSecurity</key>
+        <dict>
+                <key>NSExceptionDomains</key>
+                <dict>
+                        <key>dev.server.makenoise.app</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
@@ -16,19 +16,23 @@
 				<false/>
 				<key>NSExceptionMinimumTLSVersion</key>
 				<string>TLSv1.0</string>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-			<key>makenoise.app</key>
-			<dict>
+                                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                                <true/>
+                        </dict>
+                        <key>makenoise.app</key>
+                        <dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
-				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
-	<key>AgoraAppID</key>
-	<string>6a43bea6ce8046a88f5b9ed298b57f29</string>
+                                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                                <true/>
+                        </dict>
+                </dict>
+        </dict>
+        <key>NSCameraUsageDescription</key>
+        <string>We need access to your camera to share live video.</string>
+        <key>NSMicrophoneUsageDescription</key>
+        <string>We need access to your microphone so friends can hear you.</string>
+        <key>AgoraAppID</key>
+        <string>6a43bea6ce8046a88f5b9ed298b57f29</string>
 </dict>
 </plist>
