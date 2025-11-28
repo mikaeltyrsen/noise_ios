@@ -36,6 +36,19 @@ final class LoginViewModel: ObservableObject {
                     password: password
                 )
                 let user = try await apiClient.fetchCurrentUser()
+
+                // Register device for push after successful login, if we have an APNs token
+                if let token = APNsDeviceTokenManager.shared.getDeviceToken() {
+                    Task {
+                        do {
+                            try await self.apiClient.registerDevice(deviceToken: token, platform: "ios")
+                        } catch {
+                            // Optional: log or schedule a retry
+                            print("Failed to register device after login: \(error)")
+                        }
+                    }
+                }
+
                 await MainActor.run {
                     self.onLogin(user)
                 }

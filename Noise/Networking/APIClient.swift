@@ -59,7 +59,7 @@ struct APIUser: Decodable {
         case followerCount = "follower_count"
         case followingCount = "following_count"
         case bio
-        case website
+        case website = "website_url"
         case isPrivate = "is_private"
     }
 
@@ -274,7 +274,7 @@ final class APIClient {
                 case username
                 case displayName = "display_name"
                 case bio
-                case website
+                case website = "website_url"
                 case isPrivate = "is_private"
             }
         }
@@ -344,6 +344,52 @@ final class APIClient {
         return user
     }
 
+    struct RegisterDeviceResponse: Decodable {
+        let success: Bool
+        let message: String?
+    }
+
+    /// Registers this device for push notifications on the backend.
+    /// Sends device_token and platform.
+    func registerDevice(deviceToken: String, platform: String = "ios") async throws {
+        var request = try authorizedRequest(for: "push/register_device.php")
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        struct RegisterDeviceRequest: Encodable {
+            let deviceToken: String
+            let platform: String
+
+            enum CodingKeys: String, CodingKey {
+                case deviceToken = "device_token"
+                case platform
+            }
+        }
+
+        let payload = RegisterDeviceRequest(deviceToken: deviceToken, platform: platform)
+        request.httpBody = try JSONEncoder().encode(payload)
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(RegisterDeviceResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
+
+        guard (200...299).contains(httpResponse.statusCode), result.success else {
+            if let message = result.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+    }
+
     func authorizedRequest(for path: String, method: String = "POST") throws -> URLRequest {
         guard let token = authToken else {
             throw APIClientError.invalidCredentials
@@ -385,3 +431,4 @@ private final class DevelopmentServerTrustDelegate: NSObject, URLSessionDelegate
         completionHandler(.useCredential, credential)
     }
 }
+

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072875932ED9D04300AC54D6 /* PushTokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072875922ED9D04300AC54D6 /* PushTokenStore.swift */; };
+		072875952ED9D04600AC54D6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072875942ED9D04600AC54D6 /* AppDelegate.swift */; };
 		075456162ED5C9E800C45739 /* NoiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456152ED5C9E800C45739 /* NoiseApp.swift */; };
 		075456182ED5C9E800C45739 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456172ED5C9E800C45739 /* ContentView.swift */; };
 		0754561A2ED5C9EA00C45739 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 075456192ED5C9EA00C45739 /* Assets.xcassets */; };
@@ -25,6 +27,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		072875922ED9D04300AC54D6 /* PushTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenStore.swift; sourceTree = "<group>"; };
+		072875942ED9D04600AC54D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		075456122ED5C9E800C45739 /* Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075456152ED5C9E800C45739 /* NoiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseApp.swift; sourceTree = "<group>"; };
 		075456172ED5C9E800C45739 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 			isa = PBXGroup;
 			children = (
 				075456AC2ED88AF000C45739 /* SettingsView.swift */,
+				072875922ED9D04300AC54D6 /* PushTokenStore.swift */,
+				072875942ED9D04600AC54D6 /* AppDelegate.swift */,
 			);
 			name = Settings;
 			path = Features/Settings;
@@ -276,9 +282,11 @@
 				A0E20CEC2F0A3D9B00F2A001 /* LoginViewModel.swift in Sources */,
 				A0E20CEB2F0A3D9B00F2A001 /* LoginView.swift in Sources */,
 				075456182ED5C9E800C45739 /* ContentView.swift in Sources */,
+				072875952ED9D04600AC54D6 /* AppDelegate.swift in Sources */,
 				B1F9DE9E2F0B5F4A0002FB59 /* TokenStore.swift in Sources */,
 				075456AE2ED88AF000C45739 /* MainTabView.swift in Sources */,
 				EAD4536ABC19406FA435CEFD /* ProceduralNoiseView.swift in Sources */,
+				072875932ED9D04300AC54D6 /* PushTokenStore.swift in Sources */,
 				075456A52ED6872600C45739 /* HomeView.swift in Sources */,
 				075456A92ED8076600C45739 /* LiveDetailView.swift in Sources */,
 				075456AF2ED88AF000C45739 /* SettingsView.swift in Sources */,
@@ -426,6 +434,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -456,6 +465,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 @main
 struct NoiseApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()

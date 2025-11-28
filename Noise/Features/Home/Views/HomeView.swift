@@ -2,12 +2,11 @@ import SwiftUI
 
 struct HomeView: View {
     let user: APIUser
+    let onSelectDetail: (Recording) -> Void
+    let namespace: Namespace.ID
 
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 0), count: 3)
     private let recordings = (0..<40).map { Recording(id: $0, title: "1,34\($0 + 1)") }
-
-    @Namespace private var namespace
-    @State private var selectedRecording: Recording?
 
     var body: some View {
         NavigationView {
@@ -45,7 +44,7 @@ struct HomeView: View {
                                 RecordingGridItem(recording: recording, namespace: namespace)
                                     .onTapGesture {
                                         withAnimation(.spring(response: 0.45, dampingFraction: 0.86)) {
-                                            selectedRecording = recording
+                                            onSelectDetail(recording)
                                         }
                                     }
                             }
@@ -54,16 +53,6 @@ struct HomeView: View {
                     //.padding(1)
                 }
                 //.navigationTitle("Home")
-
-                if let selectedRecording {
-                    LiveDetailView(recording: selectedRecording, namespace: namespace) {
-                        withAnimation(.spring(response: 0.45, dampingFraction: 0.86)) {
-                            self.selectedRecording = nil
-                        }
-                    }
-                    .transition(.opacity)
-                    .zIndex(1)
-                }
             }
             .navigationBarHidden(true)
         }
@@ -178,5 +167,5 @@ private struct StatView: View {
         bio: "Bio",
         website: "https://example.com",
         isPrivate: false
-    ))
+    ), onSelectDetail: { _ in }, namespace: Namespace().wrappedValue)
 }
