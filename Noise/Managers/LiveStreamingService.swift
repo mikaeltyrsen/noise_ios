@@ -5,6 +5,7 @@ enum LiveStreamingError: LocalizedError {
     case missingAppID
     case invalidUID
     case joinFailed(Int)
+    case joinTimedOut
 
     var errorDescription: String? {
         switch self {
@@ -16,6 +17,8 @@ enum LiveStreamingError: LocalizedError {
             return "The Agora user identifier is invalid."
         case .joinFailed(let code):
             return "Joining the live stream failed with code \(code)."
+        case .joinTimedOut:
+            return "Timed out while joining the live stream."
         }
     }
 }
@@ -44,12 +47,31 @@ final class LiveStreamingService: NSObject, ObservableObject {
         }
 
         try await withCheckedThrowingContinuation { continuation in
-            let result = engine?.joinChannel(byToken: stream.rtcToken, channelId: stream.channel, info: nil, uid: uid) { _, _, _ in
-                continuation.resume(returning: ())
+            var hasResumed = false
+            func resume(_ result: Result<Void, Error>) {
+                guard !hasResumed else { return }
+                hasResumed = true
+                continuation.resume(with: result)
             }
 
-            if let result, result != 0 {
-                continuation.resume(throwing: LiveStreamingError.joinFailed(Int(result)))
+            let timeout = Task {
+                try await Task.sleep(nanoseconds: 10_000_000_000)
+                resume(.failure(LiveStreamingError.joinTimedOut))
+            }
+
+            let result = engine?.joinChannel(byToken: stream.rtcToken, channelId: stream.channel, info: nil, uid: uid) { _, _, _ in
+                timeout.cancel()
+                resume(.success(()))
+            }
+
+            if let result {
+                if result != 0 {
+                    timeout.cancel()
+                    resume(.failure(LiveStreamingError.joinFailed(Int(result))))
+                }
+            } else {
+                timeout.cancel()
+                resume(.failure(LiveStreamingError.joinFailed(-1)))
             }
         }
     }
