@@ -201,7 +201,7 @@ struct SettingsView: View {
                     imageForCropPreview = image
                 }
             }
-            .onChange(of: showImagePicker) { newValue in
+            .onChange(of: showImagePicker) { _, newValue in
                 if !newValue, imageForCropPreview != nil {
                     showCropPreview = true
                 }

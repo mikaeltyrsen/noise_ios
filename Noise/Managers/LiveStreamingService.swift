@@ -49,7 +49,7 @@ final class LiveStreamingService: NSObject, ObservableObject {
             }
 
             if let result, result != 0 {
-                continuation.resume(throwing: LiveStreamingError.joinFailed(result))
+                continuation.resume(throwing: LiveStreamingError.joinFailed(Int(result)))
             }
         }
     }
