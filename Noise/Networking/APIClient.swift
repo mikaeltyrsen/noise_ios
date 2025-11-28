@@ -113,6 +113,12 @@ struct UpdateSettingsResponse: Decodable {
     let message: String?
 }
 
+struct LiveStartResponse: Decodable {
+    let success: Bool
+    let stream: LiveStreamSession?
+    let message: String?
+}
+
 enum APIClientError: LocalizedError {
     case invalidCredentials
     case invalidResponse
@@ -342,6 +348,42 @@ final class APIClient {
         }
 
         return user
+    }
+
+    func startLiveStream(title: String?) async throws -> LiveStreamSession {
+        var request = try authorizedRequest(for: "live/start.php")
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        struct LiveStartRequest: Encodable {
+            let title: String?
+        }
+
+        let trimmedTitle = title?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let payload = LiveStartRequest(title: trimmedTitle?.isEmpty == true ? nil : trimmedTitle)
+        request.httpBody = try JSONEncoder().encode(payload)
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(LiveStartResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
+
+        guard (200...299).contains(httpResponse.statusCode), result.success, let stream = result.stream else {
+            if let message = result.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
+        return stream
     }
 
     struct RegisterDeviceResponse: Decodable {

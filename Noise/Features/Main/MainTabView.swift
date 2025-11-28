@@ -124,26 +124,108 @@ struct MakeNoiseView: View {
 struct MakeNoiseLiveView: View {
     let onDismiss: () -> Void
 
+    @StateObject private var viewModel = MakeNoiseLiveViewModel()
+    @State private var showTitlePrompt = false
+    @State private var liveTitle = ""
+
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Make Noise Live")
-                    .font(.largeTitle.bold())
-                Spacer()
-                Button("Dismiss") {
-                    onDismiss()
+            VStack(spacing: 24) {
+                VStack(spacing: 8) {
+                    Text("Make Noise Live")
+                        .font(.largeTitle.bold())
+                    Text("Go live instantly and start casting to your friends.")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.secondary)
                 }
-                .font(.headline)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.accentColor)
-                .foregroundColor(.white)
-                .cornerRadius(10)
-                .padding()
+
+                if viewModel.isStartingLive || viewModel.isJoiningLive {
+                    ProgressView("Preparing your live stream…")
+                        .progressViewStyle(.circular)
+                }
+
+                if let stream = viewModel.activeStream {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Label("Live session ready", systemImage: "dot.radiowaves.left.and.right")
+                            .font(.headline)
+                        if let title = stream.title, !title.isEmpty {
+                            Text("Title: \(title)")
+                                .foregroundColor(.secondary)
+                        }
+                        Text("Channel: \(stream.channel)")
+                            .foregroundColor(.secondary)
+                        Text("UID: \(stream.agoraUID)")
+                            .foregroundColor(.secondary)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(12)
+                }
+
+                Spacer()
+
+                VStack(spacing: 12) {
+                    Button {
+                        liveTitle = ""
+                        showTitlePrompt = true
+                    } label: {
+                        Text("MAKE NOISE")
+                            .font(.headline)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.accentColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                    }
+                    .disabled(viewModel.isStartingLive || viewModel.isJoiningLive)
+
+                    Button("Dismiss") {
+                        onDismiss()
+                    }
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.secondarySystemBackground))
+                    .foregroundColor(.primary)
+                    .cornerRadius(12)
+                }
             }
+            .padding()
             .navigationBarHidden(true)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
+            .alert("Add a title?", isPresented: $showTitlePrompt) {
+                TextField("Title (optional)", text: $liveTitle)
+                Button("Skip") {
+                    Task {
+                        await viewModel.startLiveStream(title: nil)
+                    }
+                }
+                Button("Go Live") {
+                    let trimmed = liveTitle.trimmingCharacters(in: .whitespacesAndNewlines)
+                    Task {
+                        await viewModel.startLiveStream(title: trimmed.isEmpty ? nil : trimmed)
+                    }
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Name your stream or skip to start without a title.")
+            }
+            .alert("Unable to go live", isPresented: Binding(
+                get: { viewModel.errorMessage != nil },
+                set: { newValue in
+                    if !newValue {
+                        viewModel.errorMessage = nil
+                    }
+                }
+            )) {
+                Button("OK", role: .cancel) {
+                    viewModel.errorMessage = nil
+                }
+            } message: {
+                Text(viewModel.errorMessage ?? "Unknown error")
+            }
         }
     }
 }
