@@ -29,6 +29,7 @@
 /* Begin PBXFileReference section */
 		072875922ED9D04300AC54D6 /* PushTokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushTokenStore.swift; sourceTree = "<group>"; };
 		072875942ED9D04600AC54D6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		072875962ED9D30300AC54D6 /* Noise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Noise.entitlements; sourceTree = "<group>"; };
 		075456122ED5C9E800C45739 /* Noise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Noise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		075456152ED5C9E800C45739 /* NoiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseApp.swift; sourceTree = "<group>"; };
 		075456172ED5C9E800C45739 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +79,7 @@
 		075456142ED5C9E800C45739 /* Noise */ = {
 			isa = PBXGroup;
 			children = (
+				072875962ED9D30300AC54D6 /* Noise.entitlements */,
 				075456AB2ED88AF000C45739 /* Main */,
 				075456AD2ED88AF000C45739 /* Settings */,
 				075456A82ED8076600C45739 /* LiveDetailView.swift */,
@@ -422,6 +424,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Noise/Noise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Noise/Preview Content\"";
@@ -453,6 +456,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Noise/Noise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Noise/Preview Content\"";
