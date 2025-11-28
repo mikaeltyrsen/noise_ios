@@ -46,12 +46,17 @@ final class LiveStreamingService: NSObject, ObservableObject {
             throw LiveStreamingError.invalidUID
         }
 
-        try await withCheckedThrowingContinuation { continuation in
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
             var hasResumed = false
-            func resume(_ result: Result<Void, Error>) {
+            func resume(_ result: Result<Void, any Error>) {
                 guard !hasResumed else { return }
                 hasResumed = true
-                continuation.resume(with: result)
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
             }
 
             let timeout = Task {
@@ -90,3 +95,4 @@ final class LiveStreamingService: ObservableObject {
 }
 
 #endif
+
