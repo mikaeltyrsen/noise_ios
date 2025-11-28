@@ -6,7 +6,7 @@ struct MainTabView: View {
     @State private var currentUser: APIUser
     @State private var showMakeNoiseLive = false
     @Namespace private var gridNamespace
-    @State private var selectedGridItem: Recording? = nil
+    @State private var selectedGridItem: LiveBroadcast? = nil
 
     let onLogout: () -> Void
 
@@ -75,7 +75,7 @@ struct MainTabView: View {
                         .ignoresSafeArea()
                         .onTapGesture { selectedGridItem = nil }
                     LiveDetailView(
-                        recording: item,
+                        broadcast: item,
                         namespace: gridNamespace
                     ) {
                         selectedGridItem = nil
