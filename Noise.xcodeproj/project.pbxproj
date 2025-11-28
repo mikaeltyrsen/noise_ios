@@ -21,6 +21,7 @@
 		075456A92ED8076600C45739 /* LiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456A82ED8076600C45739 /* LiveDetailView.swift */; };
 		075456AE2ED88AF000C45739 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456AA2ED88AF000C45739 /* MainTabView.swift */; };
 		075456AF2ED88AF000C45739 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075456AC2ED88AF000C45739 /* SettingsView.swift */; };
+		079EAB372EDA0FF6003FA634 /* RtcBasic in Frameworks */ = {isa = PBXBuildFile; productRef = 079EAB362EDA0FF6003FA634 /* RtcBasic */; };
 		07F948862EDA0D3E0058F89A /* AIAEC in Frameworks */ = {isa = PBXBuildFile; productRef = 07F948852EDA0D3E0058F89A /* AIAEC */; };
 		07F948882EDA0D3E0058F89A /* AIAECLL in Frameworks */ = {isa = PBXBuildFile; productRef = 07F948872EDA0D3E0058F89A /* AIAECLL */; };
 		07F9488A2EDA0D3E0058F89A /* AINS in Frameworks */ = {isa = PBXBuildFile; productRef = 07F948892EDA0D3E0058F89A /* AINS */; };
@@ -70,6 +71,7 @@
 				07F948862EDA0D3E0058F89A /* AIAEC in Frameworks */,
 				07F9488E2EDA0D3E0058F89A /* AudioBeauty in Frameworks */,
 				07F9488A2EDA0D3E0058F89A /* AINS in Frameworks */,
+				079EAB372EDA0FF6003FA634 /* RtcBasic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +571,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		079EAB362EDA0FF6003FA634 /* RtcBasic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 07F948842EDA0D3E0058F89A /* XCRemoteSwiftPackageReference "AgoraRtcEngine_iOS" */;
+			productName = RtcBasic;
+		};
 		07F948852EDA0D3E0058F89A /* AIAEC */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 07F948842EDA0D3E0058F89A /* XCRemoteSwiftPackageReference "AgoraRtcEngine_iOS" */;
