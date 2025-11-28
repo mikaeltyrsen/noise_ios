@@ -60,7 +60,7 @@ final class LiveStreamingService: NSObject, ObservableObject {
             }
 
             let timeout = Task {
-                try await Task.sleep(nanoseconds: 10_000_000_000)
+                try await Task.sleep(nanoseconds: 30_000_000_000)
                 resume(.failure(LiveStreamingError.joinTimedOut))
             }
 
