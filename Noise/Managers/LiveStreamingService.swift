@@ -5,6 +5,7 @@ enum LiveStreamingError: LocalizedError {
     case missingAppID
     case invalidUID
     case joinFailed(Int)
+    case leaveFailed(Int)
     case joinTimedOut
 
     var errorDescription: String? {
@@ -17,6 +18,8 @@ enum LiveStreamingError: LocalizedError {
             return "The Agora user identifier is invalid."
         case .joinFailed(let code):
             return "Joining the live stream failed with code \(code)."
+        case .leaveFailed(let code):
+            return "Leaving the previous live stream failed with code \(code)."
         case .joinTimedOut:
             return "Timed out while joining the live stream."
         }
@@ -30,6 +33,7 @@ final class LiveStreamingService: NSObject, ObservableObject {
     static let shared = LiveStreamingService()
 
     private var engine: AgoraRtcEngineKit?
+    private var currentChannel: String?
 
     func join(stream: LiveStreamSession) async throws {
         guard let appID = Bundle.main.object(forInfoDictionaryKey: "AgoraAppID") as? String, !appID.isEmpty else {
@@ -45,6 +49,8 @@ final class LiveStreamingService: NSObject, ObservableObject {
         guard let uid = UInt(stream.agoraUID) else {
             throw LiveStreamingError.invalidUID
         }
+
+        try await leaveChannelIfNeeded()
 
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
             var hasResumed = false
@@ -66,6 +72,7 @@ final class LiveStreamingService: NSObject, ObservableObject {
 
             let result = engine?.joinChannel(byToken: stream.rtcToken, channelId: stream.channel, info: nil, uid: uid) { _, _, _ in
                 timeout.cancel()
+                self.currentChannel = stream.channel
                 resume(.success(()))
             }
 
@@ -77,6 +84,33 @@ final class LiveStreamingService: NSObject, ObservableObject {
             } else {
                 timeout.cancel()
                 resume(.failure(LiveStreamingError.joinFailed(-1)))
+            }
+        }
+    }
+
+    private func leaveChannelIfNeeded() async throws {
+        guard let engine, currentChannel != nil else { return }
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, any Error>) in
+            var hasResumed = false
+            func resume(_ result: Result<Void, any Error>) {
+                guard !hasResumed else { return }
+                hasResumed = true
+                switch result {
+                case .success:
+                    continuation.resume(returning: ())
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+
+            let result = engine.leaveChannel { _ in
+                self.currentChannel = nil
+                resume(.success(()))
+            }
+
+            if result != 0 {
+                resume(.failure(LiveStreamingError.leaveFailed(Int(result))))
             }
         }
     }
