@@ -350,6 +350,32 @@ final class APIClient {
         return user
     }
 
+    func fetchLiveFeed() async throws -> [LiveBroadcast] {
+        let request = try authorizedRequest(for: "feed/live.php", method: "GET")
+
+        let (data, response) = try await session.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw APIClientError.invalidResponse
+        }
+
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(LiveFeedResponse.self, from: data)
+
+        if httpResponse.statusCode == 401 {
+            clearAuthToken()
+            throw APIClientError.invalidCredentials
+        }
+
+        guard (200...299).contains(httpResponse.statusCode), result.success else {
+            if let message = result.message, !message.isEmpty {
+                throw APIClientError.message(message)
+            }
+            throw APIClientError.serverError
+        }
+
+        return result.followingLive + result.otherLive
+    }
+
     func startLiveStream(title: String?) async throws -> LiveStreamSession {
         var request = try authorizedRequest(for: "live/start.php")
         request.httpMethod = "POST"

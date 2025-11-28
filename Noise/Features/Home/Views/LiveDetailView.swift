@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LiveDetailView: View {
-    let recording: Recording
+    let broadcast: LiveBroadcast
     let namespace: Namespace.ID
     var onDismiss: () -> Void
 
@@ -9,12 +9,12 @@ struct LiveDetailView: View {
         ZStack {
             RoundedRectangle(cornerRadius: 0)
                 .fill(Color(hue: 1.0, saturation: 0.0, brightness: 0.231))
-                .matchedGeometryEffect(id: recording.id, in: namespace)
-                .overlay(ProceduralNoiseView())
+                .matchedGeometryEffect(id: broadcast.id, in: namespace)
+                .overlay(LiveVideoPreview(stream: broadcast))
                 .ignoresSafeArea()
 
             VStack(spacing: 16) {
-                Text(recording.title)
+                Text(broadcast.title ?? broadcast.username)
                     .font(.largeTitle.bold())
                     .foregroundColor(.white)
 
@@ -42,7 +42,17 @@ private struct LiveDetailPreview: View {
 
     var body: some View {
         LiveDetailView(
-            recording: Recording(id: 1, title: "Example"),
+            broadcast: LiveBroadcast(
+                id: "example",
+                title: "Example Live",
+                agoraChannel: "noise_example",
+                startedAt: "2024-01-01",
+                userID: "user",
+                username: "example",
+                displayName: "Example User",
+                avatarURL: nil,
+                viewerCount: 12
+            ),
             namespace: namespace,
             onDismiss: {}
         )
